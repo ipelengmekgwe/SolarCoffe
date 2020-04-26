@@ -45,7 +45,6 @@ namespace SolarCoffee.Services.Products
                     Time = DateTime.UtcNow,
                     IsSuccess = false,
                     Message = ex.StackTrace
-
                 };
             }
         }
@@ -87,7 +86,6 @@ namespace SolarCoffee.Services.Products
                     IsSuccess = false,
                     Message = ex.StackTrace
                 };
-
             }
         }
 
