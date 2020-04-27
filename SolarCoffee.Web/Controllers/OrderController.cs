@@ -35,5 +35,21 @@ namespace SolarCoffee.Web.Controllers
             return Ok();
         }
 
+        [HttpGet("/api/order")]
+        public ActionResult GetOrders()
+        {
+            var orders = _orderService.GetSalesOrders();
+            var orderModels = OrderMapper.SerializeOrderToViewModels(orders);
+            return Ok(orderModels);
+        }
+
+        [HttpPatch("/api/order/complete/{id}")]
+        public ActionResult MarkOrderComplete(int id)
+        {
+            _logger.LogInformation($"Marking order {id} complete");
+            var response = _orderService.MarkFulfilled(id);
+            return Ok(response);
+        }
+
     }
 }
