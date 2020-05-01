@@ -70,7 +70,6 @@ export default class SolarModal extends Vue {
         display: flex;
         border-top: 1px solid #eee;
         justify-content: flex-end;
-
     }
 
     .modal-body {

@@ -5,7 +5,7 @@
         </h1>
         <hr/>
         <div class="inventory-actions">
-            <solar-button @click.native="showNewProductModal" id="addNewBtn">Add New Item</solar-button>
+            <solar-button @click.native="showNewProductModal" id="addNewBtn" style="padding-right: 5px;">Add New Item</solar-button>
             <solar-button @click.native="showShipmentModal" id="receivedShipmentBtn">Receive Shipment</solar-button>
         </div>
         <table id="inventoryTable" class="table">
@@ -14,18 +14,18 @@
                 <th>Quantity On-hand</th>
                 <th>Unit Price</th>
                 <th>Taxable</th>
-                <th>Delete</th>
+                <th>Archive</th>
             </tr>
             <tr v-for="item in inventory" :key="item.id">
                 <td>{{item.product.name}}</td>
-                <td>{{item.quantityOnHand}}</td>
+                <td v-bind:class="`${applyColor(item.quantityOnHand, item.idealQuantity)}`">{{item.quantityOnHand}}</td>
                 <td>{{item.product.price | price}}</td>
                 <td>
                     <span v-if="item.product.isTaxable">Yes</span>
                     <span v-else>No</span>
                 </td>
                 <td>
-                    <div>X</div>
+                    <div class="lni lni-cross-circle product-archive" @click="archiveProduct(item.product.id)"></div>
                 </td>
             </tr>
         </table>
@@ -43,6 +43,11 @@ import SolarButton from '@/components/SolarButton.vue';
 import NewProductModal from '@/components/modals/NewProductModal.vue';
 import ShipmentModal from '@/components/modals/ShipmentModal.vue';
 import { IShipment } from '../types/Shipment';
+import { InventoryService } from '@/services/inventory-service';
+import { ProductService } from '@/services/product-service';
+
+const inventoryService = new InventoryService();
+const productService = new ProductService();
 
 @Component({
     name: 'Inventory',
@@ -52,36 +57,15 @@ export default class Inventory extends Vue {
     isNewProductVisible: boolean = false;
     isShipmentVisible: boolean = false;
 
-    inventory: IProductInventory[] = [
-        {
-            id: 1,
-            product: { 
-                id: 1, 
-                createdOn: new Date(), 
-                updatedOn: new Date(), 
-                name: 'Cool', 
-                description: 'Awesome', 
-                price: 1000, 
-                isTaxable: true, 
-                isArchived: false },
-            quantityOnHand: 100,
-            idealQuantity: 100
-        },
-        {
-            id: 2,
-            product: { 
-                id: 2, 
-                createdOn: new Date(), 
-                updatedOn: new Date(), 
-                name: 'Cool 2', 
-                description: 'Awesome 2', 
-                price: 1500, 
-                isTaxable: false, 
-                isArchived: false },
-            quantityOnHand: 40,
-            idealQuantity: 20
-        }
-    ];
+    inventory: IProductInventory[] = [];
+
+    async initialize() {
+        this.inventory = await inventoryService.getInventory();
+    }
+
+    async created() {
+        await this.initialize();
+    }
 
     showNewProductModal() {
         this.isNewProductVisible = true;
@@ -96,18 +80,60 @@ export default class Inventory extends Vue {
         this.isNewProductVisible = false;
     }
 
-    saveNewProduct(product: IProduct) {
-        console.log('saveNewProduct:');
-        console.log(product);
+    async saveNewProduct(newProduct: IProduct) {
+        await productService.save(newProduct);
+        this.isNewProductVisible = false;
+        await this.initialize();
     }
 
-    saveNewShipment(shipment: IShipment) {
-        console.log('saveNewShipment:');
-        console.log(shipment);
+    async saveNewShipment(shipment: IShipment) {
+        await inventoryService.updateInventoryQuantity(shipment);
+        this.isShipmentVisible = false;
+        await this.initialize();
     }
+
+    applyColor(current: number, target: number) {
+        if (current <=0 ) return 'red';
+        if (Math.abs(target-current) > 8 ) return 'yellow';
+        return 'green';
+    }
+
+    async archiveProduct(productId: number) {
+        await productService.archive(productId);
+        await this.initialize();
+    }
+
 }
 </script>
 
 <style lang="scss" scoped>
     @import "@/assets/scss/global.scss";
+
+    .green {
+        font-weight: bold;
+        color: $solar-green;
+    }
+
+    .yellow {
+        font-weight: bold;
+        color: $solar-yellow;
+    }
+
+    .red {
+        font-weight: bold;
+        color: $solar-red;
+    }
+
+    .inventory-actions {
+        display: flex;
+        margin-bottom: 0.8rem;
+    }
+
+    .product-archive {
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: $solar-red;
+    }
+
 </style>

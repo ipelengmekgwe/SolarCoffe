@@ -4,10 +4,10 @@
             <img id="imageLogo" alt="Solar Coffee logo" src="../assets/images/solar_coffee_logo.png" />
         </router-link>
         <h1>Management Portal</h1>
-        <solar-button id="menuInventory" :link="'/inventory'" is-full-width>Inventory</solar-button>
-        <solar-button id="menuCustomer" :link="'/customers'" is-full-width>Manage Customer</solar-button>
-        <solar-button id="menuInvoice" :link="'/invoice/new'" is-full-width>New Invoice</solar-button>
-        <solar-button id="menuOrders" :link="'/orders'" is-full-width>Inventory</solar-button>
+        <solar-button id="menuInventory" @button:click="goToRoute('/inventory')" is-full-width>Inventory</solar-button>
+        <solar-button id="menuCustomer" @button:click="goToRoute('/customers')" is-full-width>Manage Customer</solar-button>
+        <solar-button id="menuInvoice" @button:click="goToRoute('/invoice/new')" is-full-width>New Invoice</solar-button>
+        <solar-button id="menuOrders" @button:click="goToRoute('/orders')" is-full-width>Inventory</solar-button>
     </div>
 </template>
 
@@ -21,6 +21,9 @@ import SolarButton from '@/components/SolarButton.vue'
 })
 export default class SideMenu extends Vue { 
 
+    goToRoute(route: string) {
+        this.$router.push(route);
+    }
 }
 </script>
 
