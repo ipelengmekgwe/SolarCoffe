@@ -67,8 +67,8 @@
             <div class="invoice-step-detail" id="invoice" ref="invoice">
                 <div class="invoice-logo">
                     <img id="imgLogo" alt="Solar Coffee Logo" src="../assets/images/solar_coffee_logo.png" />
-                    <h3>36 Clarendon Villas, Clarendon Street</h3>
-                    <h3>Parow, Western Cape 7500</h3>
+                    <h3>432 Buiten Drive, Unit 1</h3>
+                    <h3>Mogwase 0314, North West</h3>
                     <h3>South Africa</h3>
 
                     <div class="invoice-order-list" v-if="lineItems.length">
@@ -268,9 +268,9 @@ export default class CreateInvoice extends Vue {
         var height = this.$refs.invoice.clientHeight;
 
         html2canvas(invoice).then(canvas => {
-            var image = canvas.toDataUrl('image/png');
-            pdf.addImage(image, 'PNG', 0, 0, width * 0.55, height * 0.55);
-            pdf.save('invoice');
+            var image = canvas.toDataURL("image/png");
+            pdf.addImage(image, 'PNG', 0, 0, width * 0.49, height * 0.50);
+            pdf.save("invoice");
         });
     }
 }
