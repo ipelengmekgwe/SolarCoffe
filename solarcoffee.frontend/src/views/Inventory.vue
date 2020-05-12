@@ -5,8 +5,8 @@
         </h1>
         <hr/>
         <div class="inventory-actions">
-            <solar-button @click.native="showNewProductModal" id="addNewBtn" style="padding-right: 5px;">Add New Item</solar-button>
-            <solar-button @click.native="showShipmentModal" id="receivedShipmentBtn">Receive Shipment</solar-button>
+            <solar-button @button:click="showNewProductModal" id="addNewBtn" style="padding-right: 5px;">Add New Item</solar-button>
+            <solar-button @button:click="showShipmentModal" id="receivedShipmentBtn">Receive Shipment</solar-button>
         </div>
         <table id="inventoryTable" class="table">
             <tr>
@@ -25,7 +25,7 @@
                     <span v-else>No</span>
                 </td>
                 <td>
-                    <div class="lni lni-cross-circle product-archive" @click="archiveProduct(item.product.id)"></div>
+                    <div class="lni lni-cross-circle delete-icon" @click="archiveProduct(item.product.id)"></div>
                 </td>
             </tr>
         </table>
@@ -127,13 +127,6 @@ export default class Inventory extends Vue {
     .inventory-actions {
         display: flex;
         margin-bottom: 0.8rem;
-    }
-
-    .product-archive {
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 1.2rem;
-        color: $solar-red;
     }
 
 </style>
