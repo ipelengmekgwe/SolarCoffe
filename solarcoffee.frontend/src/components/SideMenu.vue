@@ -7,7 +7,7 @@
         <solar-button id="menuInventory" @button:click="goToRoute('/inventory')" is-full-width>Inventory</solar-button>
         <solar-button id="menuCustomer" @button:click="goToRoute('/customers')" is-full-width>Manage Customer</solar-button>
         <solar-button id="menuInvoice" @button:click="goToRoute('/invoice/new')" is-full-width>New Invoice</solar-button>
-        <solar-button id="menuOrders" @button:click="goToRoute('/orders')" is-full-width>Inventory</solar-button>
+        <solar-button id="menuOrders" @button:click="goToRoute('/orders')" is-full-width>Orders</solar-button>
     </div>
 </template>
 
