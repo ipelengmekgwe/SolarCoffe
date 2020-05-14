@@ -4,6 +4,9 @@
             Inventory Dashboard
         </h1>
         <hr/>
+
+        <inventory-chart />
+
         <div class="inventory-actions">
             <solar-button @button:click="showNewProductModal" id="addNewBtn" style="padding-right: 5px;">Add New Item</solar-button>
             <solar-button @button:click="showShipmentModal" id="receivedShipmentBtn">Receive Shipment</solar-button>
@@ -45,13 +48,14 @@ import ShipmentModal from '@/components/modals/ShipmentModal.vue';
 import { IShipment } from '../types/Shipment';
 import { InventoryService } from '@/services/inventory-service';
 import { ProductService } from '@/services/product-service';
+import InventoryChart from '@/components/charts/InventoryChart.vue';
 
 const inventoryService = new InventoryService();
 const productService = new ProductService();
 
 @Component({
     name: 'Inventory',
-    components: { SolarButton, NewProductModal, ShipmentModal }
+    components: { SolarButton, NewProductModal, ShipmentModal, InventoryChart }
 })
 export default class Inventory extends Vue {
     isNewProductVisible: boolean = false;
@@ -61,6 +65,7 @@ export default class Inventory extends Vue {
 
     async initialize() {
         this.inventory = await inventoryService.getInventory();
+        await this.$store.dispatch("assignSnapShots");
     }
 
     async created() {
@@ -93,8 +98,9 @@ export default class Inventory extends Vue {
     }
 
     applyColor(current: number, target: number) {
+        //item.quantityOnHand, item.idealQuantity
         if (current <=0 ) return 'red';
-        if (Math.abs(target-current) > 8 ) return 'yellow';
+        if (Math.abs(target-current) <= target ) return 'yellow';
         return 'green';
     }
 
