@@ -37,7 +37,7 @@ namespace SolarCoffee.Services.Inventories
         /// </summary>
         /// <param name="productInventory"></param>
         /// <returns></returns>
-        public List<ProductInventorySnapshot> GetSnapshotHistory(ProductInventory productInventory)
+        public List<ProductInventorySnapshot> GetSnapshotHistory()
         {
             var earliest = DateTime.UtcNow - TimeSpan.FromHours(6);
             return _solarDb.ProductInventorySnapshots
