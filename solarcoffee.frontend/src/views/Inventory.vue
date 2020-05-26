@@ -9,7 +9,7 @@
 
         <div class="inventory-actions">
             <solar-button @button:click="showNewProductModal" id="addNewBtn" style="padding-right: 5px;">Add New Item</solar-button>
-            <solar-button @button:click="showShipmentModal" id="receivedShipmentBtn">Receive Shipment</solar-button>
+            <solar-button @button:click="showShipmentModal" id="receiveShipmentBtn">Receive Shipment</solar-button>
         </div>
         <table id="inventoryTable" class="table">
             <tr>
